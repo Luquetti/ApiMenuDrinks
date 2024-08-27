@@ -6,7 +6,6 @@
         Whisky,
         Gin,
         Apperol,
-        Rum;
-
+        Rum
     }
 }
