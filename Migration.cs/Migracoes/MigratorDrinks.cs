@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Migracoes
+namespace Migracoes.Migracoes
 {
-[Migration(20240826203040)] 
+    [Migration(20240826203040)]
 
-public  class MigratorDrinks : Migration
-{   
+    public class MigratorDrinks : Migration
+    {
         public override void Up()
         {
             Create.Table("Drink")

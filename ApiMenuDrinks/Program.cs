@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
-using Migracoes;
+using Migracoes.Migracoes;
 namespace ApiMenuDrinks
 {
     class Program
