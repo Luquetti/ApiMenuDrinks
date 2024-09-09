@@ -19,10 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\domain\domain.csproj" />
     <ProjectReference Include="..\Migration.cs\Migracoes.csproj" />
   </ItemGroup>
 

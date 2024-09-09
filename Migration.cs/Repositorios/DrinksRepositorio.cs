@@ -13,16 +13,17 @@ namespace Migracoes.Repositorios
         {
             try
             {
-                using SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["connection"].ConnectionString))]
-                    
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["connection"].ConnectionString))
+
+
                     {
-                conn.Open();
-                var query = "DELETE FROM Drink WHERE Id =@Id";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Id", id);
-                    cmd.ExecuteNonQuery();
-                }
+                    conn.Open();
+                    var query = "DELETE FROM Drink WHERE Id =@Id";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id);
+                        cmd.ExecuteNonQuery();
+                    }
 
 
                 }
@@ -31,7 +32,7 @@ namespace Migracoes.Repositorios
             {
                 throw new Exception("Erro ao deletar bomba");
             }
-            
+
         }
 
         public List<Drinks> GetAll()
@@ -64,14 +65,14 @@ namespace Migracoes.Repositorios
             }
 
         }
-                
+
         public Drinks GetById(int id)
         {
             var drinks = new Drinks();
             var comando = "SELECT FROM * Drink";
             try
             {
-                using(SqlConnection conn= new SqlConnection(ConfigurationManager.ConnectionStrings["conection"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conection"].ConnectionString))
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(comando, conn);
@@ -85,9 +86,9 @@ namespace Migracoes.Repositorios
                         drinks.EhAlcoolica = (bool)dr["EhAlcoolica"];
                         drinks.Composicao = Enum.Parse<TipoBase>((dr["Composicao"].ToString()));
                     }
-                }return drinks;
+                } return drinks;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Erro ao selecionar drink");
             }
@@ -97,14 +98,14 @@ namespace Migracoes.Repositorios
         {
             try
             {
-                using(SqlConnection conn= new SqlConnection(ConfigurationManager.ConnectionStrings["conection"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conection"].ConnectionString))
                 {
                     conn.Open();
                     var query = "INSERT INTRO Drinks(Nome,Preco,Existe,EhAlcoolica,Composicao) VALUES(@Nome,@Preco,@Existe,@EhAlcoolica,@Composicao)";
                     using (SqlCommand comando = new SqlCommand(query, conn))
                     {
                         comando.Parameters.AddWithValue("@Nome", model.Nome);
-                        comando.Parameters.AddWithValue("@Preco",model.Preco);
+                        comando.Parameters.AddWithValue("@Preco", model.Preco);
                         comando.Parameters.AddWithValue("@Existe", model.Existe);
                         comando.Parameters.AddWithValue("EhAlcoolica", model.EhAlcoolica);
                         comando.Parameters.AddWithValue("@Composicao", model.Composicao);
@@ -112,9 +113,9 @@ namespace Migracoes.Repositorios
                     }
 
                 }
-               
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Erro ao inserir no Cardápio");
             }
@@ -122,7 +123,26 @@ namespace Migracoes.Repositorios
 
         public void Update(Drinks model)
         {
-           
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["connection"].ConnectionString))
+                {
+                    conn.Open();
+                    var query = "UPDATE Drinks SET Nome= @Nome,Preco=@Preco,Existe=@Existe,EhAlcoolica=@EhAlcoolica,Composicao=@Composicao WHERE Id=@Id";
+                    using (SqlCommand comando = new SqlCommand(query, conn))
+                    {
+                        comando.Parameters.AddWithValue("@Nome", model.Nome);
+                        comando.Parameters.AddWithValue("@Preco", model.Preco);
+                        comando.Parameters.AddWithValue("@Existe", model.Existe);
+                        comando.Parameters.AddWithValue("@EhAlcoolica", model.EhAlcoolica);
+                        comando.Parameters.AddWithValue("@Composicao", model.Composicao);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            { throw new Exception("Erro ao modificar drink no cardápio");
+            }
         }
     }
 }
