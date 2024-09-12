@@ -13,9 +13,7 @@ namespace Migracoes.Repositorios
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["connection"].ConnectionString))
-
-
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conexao"].ConnectionString))
                     {
                     conn.Open();
                     var query = "DELETE FROM Drink WHERE Id =@Id";
@@ -41,7 +39,8 @@ namespace Migracoes.Repositorios
             var comando = "SELECT * FROM Drink";
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["connection"].ConnectionString))
+                var str = ConfigurationManager.ConnectionStrings["conexao"]?.ConnectionString;
+                using (SqlConnection conn = new SqlConnection(str))
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(comando, conn);
@@ -55,8 +54,9 @@ namespace Migracoes.Repositorios
                             Preco = (double)dr["Preco"],
                             Existe = (bool)dr["Existe"],
                             EhAlcoolica = (bool)dr["EhAlcoolica"],
-                            Composicao = Enum.Parse<TipoBase>(dr.["Composicao"].ToString())
+                            Composicao = Enum.Parse<TipoBase>(dr["Composicao"].ToString()!)
                         };
+                        listadeDrinks.Add(drink);
                     }
                 }
 
@@ -72,7 +72,7 @@ namespace Migracoes.Repositorios
             var comando = "SELECT FROM * Drink";
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conection"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conexao"].ConnectionString))
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(comando, conn);
@@ -98,16 +98,16 @@ namespace Migracoes.Repositorios
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conection"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection("Server=DESKTOP-0S13DMG\\SQLEXPRESS;Database=Bebidas;TrustServerCertificate=True;User ID=sa;Password=debora806"))
                 {
                     conn.Open();
-                    var query = "INSERT INTRO Drinks(Nome,Preco,Existe,EhAlcoolica,Composicao) VALUES(@Nome,@Preco,@Existe,@EhAlcoolica,@Composicao)";
+                    var query = "INSERT INTO Drink(Nome,Preco,Existe,EhAlcoolica,Composicao) VALUES(@Nome,@Preco,@Existe,@EhAlcoolica,@Composicao)";
                     using (SqlCommand comando = new SqlCommand(query, conn))
                     {
                         comando.Parameters.AddWithValue("@Nome", model.Nome);
                         comando.Parameters.AddWithValue("@Preco", model.Preco);
                         comando.Parameters.AddWithValue("@Existe", model.Existe);
-                        comando.Parameters.AddWithValue("EhAlcoolica", model.EhAlcoolica);
+                        comando.Parameters.AddWithValue("@EhAlcoolica", model.EhAlcoolica);
                         comando.Parameters.AddWithValue("@Composicao", model.Composicao);
                         comando.ExecuteNonQuery();
                     }
